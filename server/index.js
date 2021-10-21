@@ -3,12 +3,13 @@ var app = express()
 var cors = require('cors') 
 var logger = require('morgan')
 var mongoose = require('mongoose')
+var routes = require('./src/routes')
 
 var corsOptions = { // CORS 옵션
     origin: 'http://localhost:3000',
     credentials: true
 }
-const CONNECT_URL = 'mongodb://localhost:27017/admin'
+const CONNECT_URL = 'mongodb://localhost:27017/mydbname'
 mongoose.connect(CONNECT_URL, { // Mongo DB 서버 연결
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -19,6 +20,8 @@ mongoose.connect(CONNECT_URL, { // Mongo DB 서버 연결
 app.use(cors(corsOptions)) // CORS 설정
 app.use(express.json()) // request body 파싱
 app.use(logger('tiny')) // Logger 설정
+
+app.use("/api", routes) // api 라우팅
 
 app.get('/hello', (req, res) => { // URL 응답 테스트
     res.send('hello world !')
